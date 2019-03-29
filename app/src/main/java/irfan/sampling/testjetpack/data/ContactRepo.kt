@@ -31,14 +31,14 @@ class ContactRepo(application : Application) {
      * not yet functional
      * unhide when to use it
      */
-//    fun findPeople(id: Int): People? {
-//        for (people in PeopleListInfo.peopleList) {
-//            if (people.id == id) {
-//                return people
-//            }
-//        }
-//        return null
-//    }
+    fun findPeople(id: Int): People? {
+        for (people in PeopleListInfo.peopleList) {
+            if (people.id == id) {
+                return people
+            }
+        }
+        return null
+    }
 //
 //    /**
 //     * Finds people with similar name

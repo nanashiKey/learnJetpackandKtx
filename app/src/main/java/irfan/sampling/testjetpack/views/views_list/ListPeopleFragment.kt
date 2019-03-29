@@ -12,6 +12,7 @@ import irfan.sampling.testjetpack.R
 import irfan.sampling.testjetpack.StartApp
 import irfan.sampling.testjetpack.data.data_model.People
 import irfan.sampling.testjetpack.views.views_add.AddPeopleData
+import irfan.sampling.testjetpack.views.views_detail.DetailAct
 import kotlinx.android.synthetic.main.fragment_for_list_people.*
 import kotlinx.android.synthetic.main.mainlayout.*
 
@@ -65,8 +66,10 @@ class ListPeopleFragment : Fragment(), ListPeopleAdapter.OnItemClickListener,
     }
 
     override fun onItemClick(people: People, itemView: View) {
-        Toast.makeText(activity.applicationContext, "Test Click list data",
-            Toast.LENGTH_SHORT).show()
+//        Toast.makeText(activity.applicationContext, "Test Click list data", Toast.LENGTH_SHORT).show()
+        val detailsIntent = Intent(activity.applicationContext, DetailAct::class.java)
+        detailsIntent.putExtra(getString(R.string.people_id), people.id)
+        startActivity(detailsIntent)
     }
 
 

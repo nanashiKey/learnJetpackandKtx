@@ -4,6 +4,7 @@
                                              android:layout_height="match_parent">
     <fragment
             android:id="@+id/peopleDetailsFragment"
+            android:name="irfan.sampling.testjetpack.views.views_detail.DetailFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 </android.support.constraint.ConstraintLayout>
