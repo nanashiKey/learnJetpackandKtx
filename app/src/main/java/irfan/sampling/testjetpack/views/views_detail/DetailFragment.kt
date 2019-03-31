@@ -1,6 +1,9 @@
 package irfan.sampling.testjetpack.views.views_detail
 
 import android.app.Fragment
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModel
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,20 +18,32 @@ import kotlinx.android.synthetic.main.fragment_people_details.*
  *   created by Irfan Assidiq on 3/30/19
  *   email : assidiq.irfan@gmail.com
  **/
-class DetailFragment : Fragment() {
+class DetailFragment : android.support.v4.app.Fragment() {
+
+    private lateinit var viewModel: PeopleDetailsViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = ViewModelProviders.of(this).get(PeopleDetailsViewModel::class.java)
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.fragment_people_details,
             container, false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val peopleId = activity?.intent?.getIntExtra(getString(R.string.people_id), 0)
         peopleId?.let {
-            val peopleDetails = (activity?.application as StartApp)
-                .getPeopleRepo().findPeople(peopleId)
-            populatePeopleDetails(peopleDetails)
+//            val peopleDetails = (activity?.application as StartApp)
+//                .getPeopleRepo().findPeople(peopleId)
+//            populatePeopleDetails(peopleDetails)
+            viewModel.getPeopleDetails(peopleId).observe(this,
+                Observer {
+                    peopleDetails -> populatePeopleDetails(peopleDetails)
+                })
         }
     }
     /**

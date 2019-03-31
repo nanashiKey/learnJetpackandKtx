@@ -1,6 +1,7 @@
 package irfan.sampling.testjetpack.views.views_add
 
 import android.app.Fragment
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +17,10 @@ import kotlinx.android.synthetic.main.fragment_add_people.*
  *   created by Irfan Assidiq on 3/30/19
  *   email : assidiq.irfan@gmail.com
  **/
-class FragmentAddPeople : Fragment() {
+class FragmentAddPeople : android.support.v4.app.Fragment() {
+
+    private lateinit var viewModel: AddPeopleViewModel
+
     lateinit var btn_ : Button;
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
        var view : View =  inflater.inflate(R.layout.fragment_add_people,
@@ -24,6 +28,11 @@ class FragmentAddPeople : Fragment() {
         btn_ = view.findViewById<Button>(R.id.btn_)
 
         return  view
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = ViewModelProviders.of(this).get(AddPeopleViewModel::class.java)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

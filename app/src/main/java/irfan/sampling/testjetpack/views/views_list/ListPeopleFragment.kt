@@ -1,6 +1,8 @@
 package irfan.sampling.testjetpack.views.views_list
 
 import android.app.Fragment
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -21,35 +23,46 @@ import kotlinx.android.synthetic.main.mainlayout.*
  *   created by Irfan Assidiq on 3/30/19
  *   email : assidiq.irfan@gmail.com
  **/
-class ListPeopleFragment : Fragment(), ListPeopleAdapter.OnItemClickListener,
+class ListPeopleFragment : android.support.v4.app.Fragment(), ListPeopleAdapter.OnItemClickListener,
         SearchView.OnQueryTextListener,
         SearchView.OnCloseListener{
 
     private lateinit var searchView: SearchView
+    private lateinit var viewModel : PeopleListViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        viewModel = ViewModelProviders.of(this).get(PeopleListViewModel::class.java)
     }
 
-    override fun onResume() {
-        super.onResume()
-
-        val people = (activity?.application as StartApp).getPeopleRepo().getAllPeple()
-        populatePeopleList(people)
-    }
+//    override fun onResume() {
+//        super.onResume()
+//
+////        val people = (activity?.application as StartApp).getPeopleRepo().getAllPeple()
+////        populatePeopleList(people)
+//        val peopleRepo = (activity?.application as StartApp).getPeopleRepo()
+//        peopleRepo.getAllPeple().observe(this, Observer {
+//            peopleList -> populatePeopleList(peopleList!!)
+//        })
+//    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.fragment_for_list_people, container, false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         addFab.setOnClickListener {
-//            Toast.makeText(activity.applicationContext, "Test Add Data", Toast.LENGTH_SHORT).show()
-        val intent = Intent(activity.applicationContext, AddPeopleData::class.java)
-        startActivity(intent)
+            //            Toast.makeText(activity.applicationContext, "Test Add Data", Toast.LENGTH_SHORT).show()
+            val intent = Intent(context, AddPeopleData::class.java)
+            startActivity(intent)
         }
 
+        viewModel.getPeopleList().observe(this, Observer<List<People>> {
+                peoples -> peoples?.let{
+            populatePeopleList(peoples)
+        }
+        })
     }
 
 
@@ -67,7 +80,7 @@ class ListPeopleFragment : Fragment(), ListPeopleAdapter.OnItemClickListener,
 
     override fun onItemClick(people: People, itemView: View) {
 //        Toast.makeText(activity.applicationContext, "Test Click list data", Toast.LENGTH_SHORT).show()
-        val detailsIntent = Intent(activity.applicationContext, DetailAct::class.java)
+        val detailsIntent = Intent(context, DetailAct::class.java)
         detailsIntent.putExtra(getString(R.string.people_id), people.id)
         startActivity(detailsIntent)
     }
